@@ -329,11 +329,33 @@ Le relais inclut une limitation de débit complète pour :
 
 ### Configuration via Variables d'Environnement
 
-Le relay peut maintenant être configuré entièrement via des variables d'environnement Docker Compose. Consultez `docker-compose.example.yml` pour un exemple complet de configuration.
+Le relay peut maintenant être configuré entièrement via des variables d'environnement Docker Compose. Voir `docker-compose.example.yml` pour un exemple complet.
+
+#### Variables Disponibles
+
+**Informations de Base**:
+- `RELAY_NAME`: Nom du relay (défaut: "🌾 GRAIN Relay")
+- `RELAY_DESCRIPTION`: Description du relay
+- `RELAY_BANNER`: URL de la bannière
+- `RELAY_ICON`: URL de l'icône
+- `RELAY_PUBKEY`: Clé publique du relay
+- `RELAY_CONTACT`: Contact administrateur
+
+**Paramètres Géographiques**:
+- `RELAY_COUNTRIES`: Pays (séparés par virgules, ex: "FR,BE,CH")
+- `RELAY_LANGUAGE_TAGS`: Langues supportées (ex: "fr,fr-FR,en")
+- `RELAY_TAGS`: Tags du relay (ex: "francophone,communautaire")
+
+**Limitations**:
+- `RELAY_MAX_MESSAGE_LENGTH`: Taille max des messages (défaut: 524288)
+- `RELAY_MAX_CONTENT_LENGTH`: Taille max du contenu (défaut: 8196)
+- `RELAY_MAX_SUBSCRIPTIONS`: Nombre max d'abonnements (défaut: 10)
+- `RELAY_AUTH_REQUIRED`: Authentification requise (true/false)
+- `RELAY_PAYMENT_REQUIRED`: Paiement requis (true/false)
 
 ### TODO
 
-- **Configuration YAML**: Étendre la configuration par variables d'environnement aux fichiers config.yml et whitelist.yml pour une personnalisation complète
+- **Configuration YAML**: Étendre la configuration par variables d'environnement aux fichiers config.yml et whitelist.yml
 
 ### Docker Hub
 
