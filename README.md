@@ -6,6 +6,43 @@
 
 *[English](#english) | [Français](#français)*
 
+## 📋 Changelog
+
+### Version 2.0.0 - Configuration par Variables d'Environnement
+
+#### 🆕 Nouvelles Fonctionnalités
+- **Configuration Complète par Variables d'Environnement**: Le fichier `relay_metadata.json` est maintenant généré automatiquement à partir des variables d'environnement Docker Compose
+- **Script de Configuration Intégré**: Le script `configure-relay.sh` est maintenant intégré directement dans le Dockerfile, éliminant le besoin de fichiers externes
+- **Documentation Complète**: Nouveau fichier `CONFIGURATION.md` avec guide détaillé des variables disponibles
+- **Exemples Docker Compose**: Fichiers d'exemple pour configuration basique et avancée
+
+#### 🔧 Améliorations
+- **Cohérence des Versions**: Les champs `software` et `version` sont maintenant fixes pour éviter les incohérences
+- **Validation Automatique**: Fonctions de validation pour les types booléens, tableaux et valeurs nulles
+- **Logs Informatifs**: Affichage détaillé de la configuration au démarrage du relay
+- **Sécurité Renforcée**: Seules les variables configurables par l'utilisateur sont exposées
+
+#### 🗂️ Structure des Fichiers
+- **Ajouté**: `CONFIGURATION.md` - Guide complet de configuration
+- **Ajouté**: `docker-compose.example.yml` - Exemple de configuration avancée
+- **Modifié**: `Dockerfile` - Script de configuration intégré
+- **Modifié**: `README.md` - Documentation mise à jour avec exemples
+- **Supprimé**: `configure-relay.sh` - Maintenant intégré dans le Dockerfile
+
+#### 🔄 Migration depuis la Version Précédente
+- Les anciens fichiers de configuration manuels restent compatibles
+- Les nouvelles variables d'environnement permettent une configuration plus flexible
+- Aucune action requise pour les déploiements existants
+
+#### 📚 Variables Configurables
+- **Informations de Base**: Nom, description, contact, clé publique
+- **Géographie**: Pays, langues, tags descriptifs
+- **Politiques**: URLs des politiques de confidentialité et conditions
+- **Limitations Techniques**: Tailles max, nombre d'abonnements, limites
+- **Contrôle d'Accès**: Authentification, paiement, restrictions d'écriture
+
+---
+
 ---
 
 ## English
@@ -85,9 +122,35 @@ The relay includes comprehensive rate limiting for:
 ./publish-to-dockerhub.sh
 ```
 
+### Configuration via Variables d'Environnement
+
+Le relay peut maintenant être configuré entièrement via des variables d'environnement Docker Compose. Voir `docker-compose.example.yml` pour un exemple complet.
+
+#### Variables Disponibles
+
+**Informations de Base**:
+- `RELAY_NAME`: Nom du relay (défaut: "🌾 GRAIN Relay")
+- `RELAY_DESCRIPTION`: Description du relay
+- `RELAY_BANNER`: URL de la bannière
+- `RELAY_ICON`: URL de l'icône
+- `RELAY_PUBKEY`: Clé publique du relay
+- `RELAY_CONTACT`: Contact administrateur
+
+**Paramètres Géographiques**:
+- `RELAY_COUNTRIES`: Pays (séparés par virgules, ex: "FR,BE,CH")
+- `RELAY_LANGUAGE_TAGS`: Langues supportées (ex: "fr,fr-FR,en")
+- `RELAY_TAGS`: Tags du relay (ex: "francophone,communautaire")
+
+**Limitations**:
+- `RELAY_MAX_MESSAGE_LENGTH`: Taille max des messages (défaut: 524288)
+- `RELAY_MAX_CONTENT_LENGTH`: Taille max du contenu (défaut: 8196)
+- `RELAY_MAX_SUBSCRIPTIONS`: Nombre max d'abonnements (défaut: 10)
+- `RELAY_AUTH_REQUIRED`: Authentification requise (true/false)
+- `RELAY_PAYMENT_REQUIRED`: Paiement requis (true/false)
+
 ### TODO
 
-- **Docker Compose Variables**: Use Docker Compose environment variables to personalize all YAML configuration files (config.yml, whitelist.yml) for better customization and deployment flexibility
+- **Configuration YAML**: Étendre la configuration par variables d'environnement aux fichiers config.yml et whitelist.yml
 
 ### Docker Hub
 
@@ -151,6 +214,43 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 ## Français
+
+### 📋 Journal des Modifications
+
+#### Version 2.0.0 - Configuration par Variables d'Environnement
+
+##### 🆕 Nouvelles Fonctionnalités
+- **Configuration Complète par Variables d'Environnement**: Le fichier `relay_metadata.json` est maintenant généré automatiquement à partir des variables d'environnement Docker Compose
+- **Script de Configuration Intégré**: Le script `configure-relay.sh` est maintenant intégré directement dans le Dockerfile, éliminant le besoin de fichiers externes
+- **Documentation Complète**: Nouveau fichier `CONFIGURATION.md` avec guide détaillé des variables disponibles
+- **Exemples Docker Compose**: Fichiers d'exemple pour configuration basique et avancée
+
+##### 🔧 Améliorations
+- **Cohérence des Versions**: Les champs `software` et `version` sont maintenant fixes pour éviter les incohérences
+- **Validation Automatique**: Fonctions de validation pour les types booléens, tableaux et valeurs nulles
+- **Logs Informatifs**: Affichage détaillé de la configuration au démarrage du relay
+- **Sécurité Renforcée**: Seules les variables configurables par l'utilisateur sont exposées
+
+##### 🗂️ Structure des Fichiers
+- **Ajouté**: `CONFIGURATION.md` - Guide complet de configuration
+- **Ajouté**: `docker-compose.example.yml` - Exemple de configuration avancée
+- **Modifié**: `Dockerfile` - Script de configuration intégré
+- **Modifié**: `README.md` - Documentation mise à jour avec exemples
+- **Supprimé**: `configure-relay.sh` - Maintenant intégré dans le Dockerfile
+
+##### 🔄 Migration depuis la Version Précédente
+- Les anciens fichiers de configuration manuels restent compatibles
+- Les nouvelles variables d'environnement permettent une configuration plus flexible
+- Aucune action requise pour les déploiements existants
+
+##### 📚 Variables Configurables
+- **Informations de Base**: Nom, description, contact, clé publique
+- **Géographie**: Pays, langues, tags descriptifs
+- **Politiques**: URLs des politiques de confidentialité et conditions
+- **Limitations Techniques**: Tailles max, nombre d'abonnements, limites
+- **Contrôle d'Accès**: Authentification, paiement, restrictions d'écriture
+
+---
 
 ### Aperçu
 
@@ -227,9 +327,13 @@ Le relais inclut une limitation de débit complète pour :
 ./publish-to-dockerhub.sh
 ```
 
+### Configuration via Variables d'Environnement
+
+Le relay peut maintenant être configuré entièrement via des variables d'environnement Docker Compose. Consultez `docker-compose.example.yml` pour un exemple complet de configuration.
+
 ### TODO
 
-- **Variables Docker Compose**: Utiliser les variables d'environnement Docker Compose pour personnaliser tous les fichiers de configuration YAML (config.yml, whitelist.yml) pour une meilleure personnalisation et flexibilité de déploiement
+- **Configuration YAML**: Étendre la configuration par variables d'environnement aux fichiers config.yml et whitelist.yml pour une personnalisation complète
 
 ### Docker Hub
 

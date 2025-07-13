@@ -37,6 +37,33 @@ RUN addgroup -g 1001 grain && \
     adduser -D -s /bin/sh -u 1001 -G grain grain && \
     chown -R grain:grain /app
 
+# Set default environment variables for relay metadata (owner-configurable only)
+ENV RELAY_NAME="🌾 GRAIN Relay" \
+    RELAY_DESCRIPTION="Go Relay Architecture for Implementing Nostr" \
+    RELAY_BANNER="" \
+    RELAY_ICON="" \
+    RELAY_PUBKEY="" \
+    RELAY_CONTACT="" \
+    RELAY_PRIVACY_POLICY="" \
+    RELAY_TERMS_OF_SERVICE="" \
+    RELAY_COUNTRIES="US" \
+    RELAY_LANGUAGE_TAGS="en,en-US" \
+    RELAY_TAGS="open-access,community" \
+    RELAY_POSTING_POLICY="" \
+    RELAY_MAX_MESSAGE_LENGTH="524288" \
+    RELAY_MAX_CONTENT_LENGTH="8196" \
+    RELAY_MAX_SUBSCRIPTIONS="10" \
+    RELAY_MAX_LIMIT="500" \
+    RELAY_AUTH_REQUIRED="false" \
+    RELAY_PAYMENT_REQUIRED="false" \
+    RELAY_RESTRICTED_WRITES="false" \
+    RELAY_CREATED_AT_LOWER_LIMIT="1577836800" \
+    RELAY_CREATED_AT_UPPER_LIMIT="null"
+
+# Copy configuration script
+COPY configure-relay.sh /app/configure-relay.sh
+RUN chmod +x /app/configure-relay.sh && chown grain:grain /app/configure-relay.sh
+
 USER grain
 
 EXPOSE 8181
@@ -44,4 +71,4 @@ EXPOSE 8181
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:8181/ || exit 1
 
-CMD ["./grain"]
+CMD ["/app/configure-relay.sh"]

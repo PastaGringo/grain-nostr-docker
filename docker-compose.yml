@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  grain-relay:
+    image: pastagringo/grain-dockerized:latest
+    container_name: grain-relay
+    ports:
+      - "8181:8181"
+    environment:
+      # Configuration de base du relay
+      RELAY_NAME: "🌾 Mon Relay GRAIN"
+      RELAY_DESCRIPTION: "Un relay Nostr communautaire français"
+      RELAY_CONTACT: "mailto:admin@example.com"
+      RELAY_PUBKEY: "fa984bd7dbb282f07e16e7ae87b26a2a7b9b90b7246a44771f0cf5ae58018f52"
+      
+      # Paramètres géographiques
+      RELAY_COUNTRIES: "FR,BE,CH"
+      RELAY_LANGUAGE_TAGS: "fr,fr-FR,en"
+      RELAY_TAGS: "francophone,communautaire,libre"
+      
+      # Limitations
+      RELAY_MAX_SUBSCRIPTIONS: "20"
+      RELAY_AUTH_REQUIRED: "false"
+      
+      # Configuration MongoDB
+      MONGO_URI: "mongodb://mongo:27017/grain"
+    
+    depends_on:
+      - mongo
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8181/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongo:
+    image: mongo:7.0
+    container_name: grain-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: grain
+      MONGO_INITDB_ROOT_PASSWORD: grain_password
+      MONGO_INITDB_DATABASE: grain
+    volumes:
+      - grain_mongo_data:/data/db
+      - grain_mongo_config:/data/configdb
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  grain_mongo_data:
+    driver: local
+  grain_mongo_config:
+    driver: local
